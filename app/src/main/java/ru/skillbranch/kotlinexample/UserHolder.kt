@@ -38,8 +38,8 @@ object UserHolder {
         list.forEach{
             val (fullName, email, access, phone) =
                 it.split(";").map{it.trim().ifBlank { null }}.subList(0,4)
-            userList.add(User.makeUser(fullName = fullName!!, email = email, phone = phone, password = "xxx")
-                .apply {setHash(access!!.substringAfter(":")) })}
+            userList.add(User.makeUser(fullName = fullName!!, email = email, phone = phone,
+                password = access!!.substringAfter(":"), csvMode = true))}
         return userList
     }
 

@@ -71,6 +71,18 @@ class User private constructor(
 
     }
 
+    //for csv
+    constructor(
+        firstName: String,
+        lastName: String?,
+        email: String?,
+        pwdHash: String,
+        phone: String?
+    ): this(firstName, lastName, email = email, meta = mapOf("src" to "csv"), rawPhone = phone) {
+        println("csv constructor")
+        passwordHash = pwdHash
+    }
+
     init{
         println("First init block, primary constructor was called")
 
@@ -123,20 +135,18 @@ class User private constructor(
         }.toString()
     }
 
-    fun setHash(hash: String) {
-        passwordHash = hash
-    }
-
     companion object Factory{
         fun makeUser(
             fullName: String,
             email: String? = null,
             password: String? = null,
-            phone: String? = null
+            phone: String? = null,
+            csvMode: Boolean = false
         ): User {
             val (firstName, lastName) = fullName.fullNameToPair()
 
             return when {
+                csvMode -> User(firstName, lastName, email, password!!, phone)
                 !phone.isNullOrBlank() -> User(firstName, lastName, rawPhone = phone)
                 !email.isNullOrBlank() && !password.isNullOrBlank() -> User(firstName, lastName, email, password)
                 else -> throw IllegalArgumentException("Email or phone must be not null or blank")
