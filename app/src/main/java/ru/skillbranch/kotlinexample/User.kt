@@ -123,6 +123,10 @@ class User private constructor(
         }.toString()
     }
 
+    fun setHash(hash: String) {
+        passwordHash = hash
+    }
+
     companion object Factory{
         fun makeUser(
             fullName: String,
