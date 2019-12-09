@@ -39,7 +39,7 @@ object UserHolder {
             val (fullName, email, access, phone) =
                 it.split(";").map{it.trim().ifBlank { null }}.subList(0,4)
             userList.add(User.makeUser(fullName = fullName!!, email = email, phone = phone,
-                password = access!!.substringAfter(":"), csvMode = true))}
+                password = access!!.substringAfter(":"), salt = access.substringBefore(":")))}
         return userList
     }
 
