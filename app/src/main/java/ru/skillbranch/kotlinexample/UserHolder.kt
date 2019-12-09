@@ -33,16 +33,15 @@ object UserHolder {
         }
     }
 
-    //
-//    fun importUsers(list: List<String>): List<String> {
-//
-//        return listOf<String>()
-//    }
-//
-//    fun <T> List<T>.dropLastUntil(predicate: (T) -> Boolean): List<T> {
-//
-//    }
-
+    fun importUsers(list: List<String>): List<User> {
+        val userList = arrayListOf<User>()
+        list.forEach{
+            val (fullName, email, access, phone) =
+                it.split(";").map{it.trim().ifBlank { null }}.subList(0,4)
+            userList.add(User.makeUser(fullName = fullName!!, email = email, phone = phone, password = "xxx")
+                .apply {setHash(access!!.substringAfter(":")) })}
+        return userList
+    }
 
     private fun String.isLetterContained(): Boolean {
         this.forEach { if(it.isLetter()) return true }
