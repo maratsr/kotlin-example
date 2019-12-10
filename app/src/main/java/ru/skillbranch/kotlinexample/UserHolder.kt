@@ -39,7 +39,9 @@ object UserHolder {
             val (fullName, email, access, phone) =
                 it.split(";").map{it.trim().ifBlank { null }}.subList(0,4)
             userList.add(User.makeUser(fullName = fullName!!, email = email, phone = phone,
-                password = access!!.substringAfter(":"), salt = access.substringBefore(":")))}
+                password = access!!.substringAfter(":"), salt = access.substringBefore(":"))
+                .also{map[it.login] = it})
+        }
         return userList
     }
 
@@ -61,6 +63,6 @@ object UserHolder {
 
     private fun normalizeLogin(login: String):String {
         return if(login.length > 0 && login[0] == '+') getFormattedPhone(login)
-        else login.toLowerCase()
+        else login//.toLowerCase()
     }
 }
